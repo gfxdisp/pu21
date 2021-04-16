@@ -1,2 +1,70 @@
-# pu21
-Perceptual Uniform encoding for image/video quality assessment (2021  revision)
+# PU21 - Perceptual Uniform encoding for image/video quality assessment 
+
+This is 2021 revision of the method for encoding high dynamic range images so that their quality can be evaluated with simple metrics, such as PSNR or SSIM. 
+
+Because linear colour values used for high dynamic range images are not perceptual uniform, HDR pixel values must not be directly used with the metrics intended for standard dynamic range (SDR) images (such as PSNR, SSIM, MS-SSIM). PU21 encodes linear RGB colour values so that they are more perceptually uniform and can be used with SDR metrics. 
+
+Currently only Matlab code is available. However, since the encoding involves a single equation, it can be easily ported to other languages. The encoding is implemented [here](https://github.com/gfxdisp/pu21/blob/main/matlab/pu21_encoder.m). Please use only the `banding_glare` variant. 
+
+# Example
+
+This example shows how to run PU21 metrics on HDR images
+
+```
+I_ref = hdrread( 'nancy_church.hdr' );
+
+L_peak = 4000; % Peak luminance of an HDR display
+
+% HDR images are often given in relative photometric units. They MUST be
+% mapped to absolute amount of light emitted from the display. For that, 
+% we map the peak value in the image to the peak value of the display:
+I_ref = I_ref/max(I_ref(:)) * L_peak;
+
+% Add Gaussian noise of 20% contrast. Make sure all values are greater than
+% 0.05.
+I_test_noise = max( I_ref + I_ref.*randn(size(I_ref))*0.2, 0.05 );
+
+I_test_blur = imgaussfilt( I_ref, 3 );
+
+PSNR_noise = pu21_metric( I_test_noise, I_ref, 'PSNR' );
+SSIM_noise = pu21_metric( I_test_noise, I_ref, 'SSIM' );
+
+PSNR_blur = pu21_metric( I_test_blur, I_ref, 'PSNR' );
+SSIM_blur = pu21_metric( I_test_blur, I_ref, 'SSIM' );
+
+fprintf( 1, 'Image with noise: PSNR = %g dB, SSIM = %g\n', PSNR_noise, SSIM_noise );
+fprintf( 1, 'Image with blur: PSNR = %g dB, SSIM = %g\n', PSNR_blur, SSIM_blur );
+
+```
+
+More examples can be found in the [example](https://github.com/gfxdisp/pu21/tree/main/matlab/examples) folder. 
+
+# Other metrics
+
+Alternative metrics for assessing the quality of high dynamic range images and video:
+
+[FovVideoVDP](https://github.com/gfxdisp/FovVideoVDP) - Foveated Video Visual Difference Predictor
+[HDR-VDP-2 / HDR-VDP-3](http://hdrvdp.sourceforge.net/) - Visual Difference Predictor for High Dynamic Range Images
+
+# References
+
+The PU21 encoding is explained in the paper:
+
+> PU21: A novel perceptually uniform encoding for adapting existing quality metrics for HDR.
+> Rafał K. Mantiuk and Maryam Azimi
+> Picture Coding Symposium 2021
+> [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/mantiuk2021_PU21.pdf)
+
+The new PU21 encoding improves on the older PU (or PU08) encoding, explained in: 
+
+> Extending quality metrics to full luminance range images. 
+> Tunç O. Aydın, Rafał Mantiuk and Hans-Peter Seidel
+> In: Human Vision and Electronic Imaging. Spie 2008. no. 68060B. 
+> [http://dx.doi.org/10.1117/12.765095](http://dx.doi.org/10.1117/12.765095) [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/aydin08eqmflri.pdf)
+
+Discussion of the evaluation of quality of HDR images is discussed in:
+
+> Practicalities of predicting quality of high dynamic range images and video
+> Rafał K. Mantiuk.
+> In: Proc. of IEEE International Conference on Image Processing (ICIP'16), pp. 904-908, 2016
+> [http://dx.doi.org/10.1109/ICIP.2016.7532488](http://dx.doi.org/10.1109/ICIP.2016.7532488) [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/mantiuk2016prac_hdr_metrics.pdf)

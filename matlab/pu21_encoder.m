@@ -9,11 +9,11 @@ classdef pu21_encoder
     % The derivation of the PU21 encoding is explained in the paper: 
     %
     % R. Mantiuk and M. Azimi
-    % PU21: A novel perceptually uniform encoding foradapting existing
+    % PU21: A novel perceptually uniform encoding for adapting existing
     % quality metrics for HDR.
-    % Under review
+    % Picture Coding Symposium 2021
     %
-    % The new PU21 encoding improves on the older PU or PU08 encoding,
+    % The new PU21 encoding improves on the older PU (or PU08) encoding,
     % explained in: 
     %
     % Aydin TO, Mantiuk R, Seidel H-P. 
