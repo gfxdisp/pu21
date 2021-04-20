@@ -14,7 +14,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="pu_diagram.svg">
+   sodipodi:docname="pu_diagram.svg"
+   inkscape:export-filename="C:\Users\manti\Documents\projects\pu21\images\pu_diagram.png"
+   inkscape:export-xdpi="149.84346"
+   inkscape:export-ydpi="149.84346">
   <defs
      id="defs2">
     <marker
@@ -125,15 +128,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="400"
-     inkscape:cy="297.36034"
+     inkscape:cx="389.64594"
+     inkscape:cy="317.56339"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="true"
      inkscape:window-width="3840"
      inkscape:window-height="2066"
-     inkscape:window-x="-11"
+     inkscape:window-x="3829"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:snap-object-midpoints="true"
@@ -152,7 +155,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -160,6 +163,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:0.600001, 0.60000100000000001;stroke-dashoffset:0;stop-color:#000000"
+       id="rect1464"
+       width="154.78125"
+       height="60.854168"
+       x="13.229167"
+       y="15.875" />
     <rect
        style="fill:#e0e9f2;fill-opacity:1;stroke:#000000;stroke-width:0.2;stop-color:#000000"
        id="rect905"
@@ -185,7 +195,7 @@
          id="tspan909">HDR display</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1329)"
-       d="m 31.330505,62.796043 21.586162,-0.0044"
+       d="m 31.330505,62.796045 21.586162,-0.0044"
        id="path1259"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -193,13 +203,13 @@
     <image
        sodipodi:absref="C:\Users\manti\Documents\projects\pu21\images\ex_ref_image.png"
        xlink:href="ex_ref_image.png"
-       style="stroke-width:2.64384"
-       y="54.239582"
-       x="18.520834"
-       id="image845"
+       width="25.619343"
+       height="17.112926"
        preserveAspectRatio="none"
-       height="17.112923"
-       width="25.619343" />
+       id="image845"
+       x="18.520834"
+       y="54.239582"
+       style="stroke-width:3.23487" />
     <rect
        style="fill:#e0e9f2;fill-opacity:1;stroke:#000000;stroke-width:0.2;stop-color:#000000"
        id="rect881"
@@ -230,13 +240,13 @@
     <image
        sodipodi:absref="C:\Users\manti\Documents\projects\pu21\images\ex_test_image.png"
        xlink:href="ex_test_image.png"
-       style="stroke-width:2.64384"
-       y="27.78125"
-       x="18.520834"
-       id="image859"
-       preserveAspectRatio="none"
+       width="25.619343"
        height="17.112923"
-       width="25.619343" />
+       preserveAspectRatio="none"
+       id="image859"
+       x="18.520834"
+       y="27.78125"
+       style="stroke-width:3.23487" />
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.2;stop-color:#000000"
        id="rect865"
