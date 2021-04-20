@@ -55,7 +55,7 @@ The PU21 encoding is explained in the paper:
 > PU21: A novel perceptually uniform encoding for adapting existing quality metrics for HDR.
 > Rafał K. Mantiuk and Maryam Azimi
 > In: Picture Coding Symposium 2021
-
+>
 > [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/mantiuk2021_PU21.pdf)
 
 The new PU21 encoding improves on the older PU (or PU08) encoding, explained in: 
@@ -63,8 +63,9 @@ The new PU21 encoding improves on the older PU (or PU08) encoding, explained in:
 > Extending quality metrics to full luminance range images. 
 > Tunç O. Aydın, Rafał Mantiuk and Hans-Peter Seidel
 > In: Human Vision and Electronic Imaging. Spie 2008. no. 68060B. 
-
+>
 > [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/aydin08eqmflri.pdf)
+>
 > [http://dx.doi.org/10.1117/12.765095](http://dx.doi.org/10.1117/12.765095) 
 
 Discussion of the evaluation of quality of HDR images is discussed in:
@@ -72,6 +73,7 @@ Discussion of the evaluation of quality of HDR images is discussed in:
 > Practicalities of predicting quality of high dynamic range images and video
 > Rafał K. Mantiuk.
 > In: Proc. of IEEE International Conference on Image Processing (ICIP'16), pp. 904-908, 2016
-
+>
 > [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/mantiuk2016prac_hdr_metrics.pdf)
+>
 > [http://dx.doi.org/10.1109/ICIP.2016.7532488](http://dx.doi.org/10.1109/ICIP.2016.7532488) 
