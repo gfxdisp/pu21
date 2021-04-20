@@ -3,7 +3,9 @@
 
 This is 2021 revision of the method for encoding high dynamic range images so that their quality can be evaluated with simple metrics, such as PSNR or SSIM. 
 
-Because linear colour values used for high dynamic range images are not perceptual uniform, HDR pixel values must not be directly used with the metrics intended for standard dynamic range (SDR) images (such as PSNR, SSIM, MS-SSIM). PU21 encodes linear RGB colour values so that they are more perceptually uniform and can be used with SDR metrics. 
+![PU usage diagram](https://raw.githubusercontent.com/gfxdisp/pu21/images/images/pu_diagram.png)
+
+Because linear colour values used for high dynamic range images are not perceptual uniform, HDR pixel values must not be directly used with the metrics intended for standard dynamic range (SDR) images (such as PSNR, SSIM, MS-SSIM). PU21 encodes absolute linear RGB colour values so that they are more perceptually uniform and can be used with SDR metrics. To properly account for the sensitivity of the visual system at a given luminance level, the linear colour values must be mapped to absolute values (emitted from a reference display) before they can be passed to the PU21 encoding. 
 
 Currently only Matlab code is available. However, since the encoding involves a single equation, it can be easily ported to other languages. The encoding is implemented [here](https://github.com/gfxdisp/pu21/blob/main/matlab/pu21_encoder.m). Please use only the `banding_glare` variant. 
 
@@ -50,7 +52,7 @@ Alternative metrics for assessing the quality of high dynamic range images and v
 
 # References
 
-The PU21 encoding is explained in the paper:
+If you use PU21 encoding in your research, please cite the following paper, which explains the derivation of PU21:
 
 > PU21: A novel perceptually uniform encoding for adapting existing quality metrics for HDR.
 > Rafał K. Mantiuk and Maryam Azimi
@@ -58,7 +60,7 @@ The PU21 encoding is explained in the paper:
 
 > [PDF](https://www.cl.cam.ac.uk/~rkm38/pdfs/mantiuk2021_PU21.pdf)
 
-The new PU21 encoding improves on the older PU (or PU08) encoding, explained in: 
+The new PU21 encoding improves on the older PU (or PU08) encoding, which is explained in: 
 
 > Extending quality metrics to full luminance range images. 
 > Tunç O. Aydın, Rafał Mantiuk and Hans-Peter Seidel
