@@ -73,7 +73,7 @@ classdef pu21_encoder
                 warning( 'Values passed to encode are outside the valid range' );
             end
             
-            Y = clamp(Y, obj.L_min, obj.L_max);
+            Y = min(max(Y, obj.L_min), obj.L_max); % Clamp the values
             p = obj.par;
             V = p(7) * (((p(1) + p(2)*Y.^p(4))./(1+p(3).*Y.^p(4))).^p(5)-p(6));
             

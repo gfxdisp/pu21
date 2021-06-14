@@ -41,7 +41,7 @@ if ~isfloat(I_reference)
     I_reference = single(I_reference)/single(intmax(class(I_reference)));
 end
 
-if exist( 'dm', 'var' ) && ~isempty( display_model )
+if exist( 'display_model', 'var' ) && ~isempty( display_model )
     % Simulate an SDR display if display model is provided
     L_test = display_model.forward( I_test );
     L_reference = display_model.forward( I_reference );
