@@ -44,9 +44,7 @@ More examples can be found in the [example](https://github.com/gfxdisp/pu21/tree
 
 # Conference talk video
 
-You can watch the video recorded for the Picture Coding Symposium (2021), which explains how to use the PU21 and how it was derived.
-
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/C2tafNbpwtY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+You can watch the [video](https://youtu.be/C2tafNbpwtY) recorded for the Picture Coding Symposium (2021), which explains how to use the PU21 and how it was derived.
 
 # Other metrics
 
