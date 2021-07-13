@@ -3,6 +3,7 @@ import HDRutils
 import os 
 import pu21_metric
 import torch
+import scipy.ndimage as ndimage
 
 I_ref = HDRutils.imread( os.path.join("..","matlab","examples",'nancy_church.hdr' ))
 I_ref = torch.tensor(I_ref)
@@ -25,9 +26,10 @@ PSNR_noise = pu21_metric.pu21_metric( I_test_noise, I_ref, 'PSNR' )
 SSIM_noise = pu21_metric.pu21_metric( I_test_noise, I_ref, 'SSIM' )
 
 print('Image with noise: PSNR = {} dB, SSIM = {}'.format( PSNR_noise, SSIM_noise) )
-
+print(I_ref.shape)
+I_test_blur = ndimage.gaussian_filter(I_ref, sigma=(3, 3, 3), order=0)
 #I_test_blur = imgaussfilt( I_ref, 3 )
 
-# PSNR_blur = pu21_metric( I_test_blur, I_ref, 'PSNR' )
-# SSIM_blur = pu21_metric( I_test_blur, I_ref, 'SSIM' )
-#fprintf( 1, 'Image with blur: PSNR = %g dB, SSIM = %g\n', PSNR_blur, SSIM_blur );
+PSNR_noise = pu21_metric.pu21_metric( I_test_blur, I_ref, 'PSNR' )
+SSIM_noise = pu21_metric.pu21_metric( I_test_blur, I_ref, 'SSIM' )
+print('Image with blur: PSNR = {} dB, SSIM = {}'.format( PSNR_noise, SSIM_noise) )

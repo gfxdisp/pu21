@@ -1,6 +1,7 @@
 import torch
 from pu21_encoder import pu21_encoder
 from ignite.metrics import SSIM,PSNR
+from skimage.metrics import structural_similarity
 
 def pu21_metric( I_test, I_reference, metric, display_model=None ):
     """
@@ -68,7 +69,10 @@ def pu21_metric( I_test, I_reference, metric, display_model=None ):
         if metric.lower() == 'ssim':
             # Note that we are passing floating point values, which are in the
             # range 0-256 for the luminance range 0.1 to 100 cd/m^2
-            metricFunc = SSIM(255)
+            #metricFunc = SSIM(255,kernel_size=(101,101))
+            P_test = P_test.permute(1,2,0)
+            P_reference = P_reference.permute(1,2,0)
+            return structural_similarity(P_test.numpy(),P_reference.numpy(),multichannel=True,data_range=255)
         if metricFunc==None:
             raise Exception( 'Unknown metric {}'.format(metric) )
         else:
