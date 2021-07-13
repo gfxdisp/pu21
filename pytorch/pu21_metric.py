@@ -1,5 +1,6 @@
 import torch
 from pu21_encoder import pu21_encoder
+from ignite.metrics import SSIM,PSNR
 
 def pu21_metric( I_test, I_reference, metric, display_model=None ):
     """
@@ -57,19 +58,23 @@ def pu21_metric( I_test, I_reference, metric, display_model=None ):
     pu21 = pu21_encoder()
     P_test = pu21.encode( L_test )
     P_reference = pu21.encode( L_reference )
-    # not implemented
-    #     if ischar( metric )
-    #     switch metric
-    #         case { 'PSNR', 'psnr' }
-    #             Q = psnr( P_test, P_reference, 256 );
-    #         case { 'SSIM', 'ssim' }
-    #             % Note that we are passing floating point values, which are in the
-    #             % range 0-256 for the luminance range 0.1 to 100 cd/m^2
-    #             Q = ssim( P_test, P_reference, 'DynamicRange', 256);
-    #         otherwise
-    #             error( 'Unknown metric "%s"', metric );
-    #     end
-    # else
-    Q = metric(P_test,P_reference)
+    P_test = P_test.permute(2,1,0)
+    P_reference = P_reference.permute(2,1,0)
+    print("P_test max", torch.max( P_test)) 
+    if isinstance(metric, str):
+        metricFunc = None
+        if metric.lower() == 'psnr':
+            metricFunc = PSNR(255)
+        if metric.lower() == 'ssim':
+            # Note that we are passing floating point values, which are in the
+            # range 0-256 for the luminance range 0.1 to 100 cd/m^2
+            metricFunc = SSIM(255)
+        if metricFunc==None:
+            raise Exception( 'Unknown metric {}'.format(metric) )
+        else:
+            metricFunc.update((P_test.unsqueeze(0),P_reference.unsqueeze(0)))
+            Q = metricFunc.compute()
+    else:
+        Q = metric(P_test,P_reference)
     return Q
     
