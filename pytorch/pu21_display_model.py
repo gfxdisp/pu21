@@ -42,7 +42,7 @@ class pu21_display_model_gog():
         # 0-1, into absolute linear colorimetric values emitted from
         # the display.
         if torch.any(V>1) or torch.any(V<0) :
-            raise Warning('Pixel values must be in the range 0-1')
+            print( Warning('Pixel values must be in the range 0-1'))
         Y_black = self.get_black_level()
         L = (self.Y_peak-Y_black)*(V**self.gamma) + Y_black
         return L

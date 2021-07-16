@@ -1,7 +1,7 @@
 import torch
 from pu21_encoder import pu21_encoder
 from ignite.metrics import SSIM,PSNR
-from skimage.metrics import structural_similarity
+from skimage.metrics import structural_similarity,peak_signal_noise_ratio
 
 def pu21_metric( I_test, I_reference, metric, display_model=None ):
     """
@@ -44,11 +44,15 @@ def pu21_metric( I_test, I_reference, metric, display_model=None ):
     I_test = torch.tensor(I_test)
     if not I_test.is_floating_point():
         print( Warning("Hardcoded 255, this is super cursed to do in python"))
-        I_test = I_test.to(torch.float)/255
+        I_test = I_test.to(torch.float64)/torch.iinfo(I_test.dtype).max
     if not I_reference.is_floating_point():
         print( Warning("Hardcoded 255, this is super cursed to do in python"))
-        I_reference = I_reference.to(torch.float)/255 
-    
+        print(I_reference.dtype)
+        I_reference = I_reference.to(torch.float64)/torch.iinfo(I_reference.dtype).max
+    # I_test/=2**16-1
+    # I_reference/=2**16-1
+    I_reference = I_reference.to(torch.float64)
+    I_test = I_test.to(torch.float64)
     if display_model !=None:
         L_test = display_model.forward( I_test )
         L_reference = display_model.forward( I_reference )
@@ -62,17 +66,19 @@ def pu21_metric( I_test, I_reference, metric, display_model=None ):
     P_test = P_test.permute(2,1,0)
     P_reference = P_reference.permute(2,1,0)
     print("P_test max", torch.max( P_test)) 
+    print("P_test min", torch.min( P_test)) 
     if isinstance(metric, str):
         metricFunc = None
         if metric.lower() == 'psnr':
-            metricFunc = PSNR(255)
+            #metricFunc = PSNR(1.0)
+            return peak_signal_noise_ratio(P_test.numpy(),P_reference.numpy(),data_range=1)
         if metric.lower() == 'ssim':
             # Note that we are passing floating point values, which are in the
             # range 0-256 for the luminance range 0.1 to 100 cd/m^2
             #metricFunc = SSIM(255,kernel_size=(101,101))
             P_test = P_test.permute(1,2,0)
             P_reference = P_reference.permute(1,2,0)
-            return structural_similarity(P_test.numpy(),P_reference.numpy(),multichannel=True,data_range=255)
+            return structural_similarity(P_test.numpy(),P_reference.numpy(),multichannel=True,gaussian_weights=True, use_sample_covariance=False,data_range=255.0)
         if metricFunc==None:
             raise Exception( 'Unknown metric {}'.format(metric) )
         else:
