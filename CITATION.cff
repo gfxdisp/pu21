@@ -1,0 +1,24 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  PU21: A novel perceptually uniform encoding for
+  adapting existing quality metrics for HDR
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Rafal
+    family-names: Mantiuk
+    email: mantiuk@gmail.com
+    affiliation: University of Cambridge
+    orcid: 'https://orcid.org/0000-0003-2353-0349'
+  - given-names: Maryam
+    family-names: Azimi
+identifiers:
+  - type: url
+    value: 'https://github.com/gfxdisp/pu21'
+    description: Software repository
+  - type: doi
+    value: 10.1109/PCS50896.2021.9477471
+    description: 'Paper describing how the coding was created. '
