@@ -24,5 +24,5 @@ SSIM_noise = pu21_metric( I_test_noise, I_ref, 'SSIM', pu_dm );
 PSNR_blur = pu21_metric( I_test_blur, I_ref, 'PSNR', pu_dm );
 SSIM_blur = pu21_metric( I_test_blur, I_ref, 'SSIM', pu_dm );
 
-fprintf( 1, 'Image with noise: PSNR = %g dB, SSIM = %g\n', PSNR_noise, SSIM_noise );
-fprintf( 1, 'Image with blur: PSNR = %g dB, SSIM = %g\n', PSNR_blur, SSIM_blur );
+fprintf( 1, 'Image with noise: PU21-PSNR = %g dB, PU21-SSIM = %g\n', PSNR_noise, SSIM_noise );
+fprintf( 1, 'Image with blur: PU21-PSNR = %g dB, PU21-SSIM = %g\n', PSNR_blur, SSIM_blur );

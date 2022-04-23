@@ -1,4 +1,10 @@
 function Q = pu21_metric( I_test, I_reference, metric, display_model )
+arguments
+    I_test { isimage(I_test) }
+    I_reference { isimage(I_reference) }
+    metric = 'PSNR'
+    display_model = []
+end
 % A convenience function for calling traditional (SDR) metrics on
 % PU-encoded pixel values. This is useful for adapting traditional metrics
 % to HDR images.
@@ -19,7 +25,18 @@ function Q = pu21_metric( I_test, I_reference, metric, display_model )
 % display_model is an object of the class pu21_display_model_gog. Check
 % exaples/ex_sdr_images.m on how to create an object of this class.
 %
-% metric can be either 'PSNR', 'SSIM'. You can also pass a handle to a
+% metric agument must be one of:
+% 'PSNR' - Peak Signal-to-Noise Ratio
+% 'PSNRY' - Peak Signal-to-Noise Ratio on luminance
+% 'SSIM' - Structural Similarity Index (on luminance). 
+% 'MSSSIM' - Multi-Scale Structural Similarity Index (on luminance). 
+% 'FSIM' - Feature SIMilarity index
+% 'VSI' - Visual Saliency based Index
+%
+% Note that an RGB image wll be converted to luminance before running any
+% luminance-only metric, such as SSIM or MSSSIM. 
+%
+% You can also pass as a 'metric' a handle to a 
 % function Q = fun(I_test, I_referece). The function should expect both
 % images to be stored as floating point numbers and the typical range from
 % 0 to 255. The range of values can be higher for bright HDR images or
@@ -41,7 +58,7 @@ if ~isfloat(I_reference)
     I_reference = single(I_reference)/single(intmax(class(I_reference)));
 end
 
-if exist( 'display_model', 'var' ) && ~isempty( display_model )
+if ~isempty( display_model )
     % Simulate an SDR display if display model is provided
     L_test = display_model.forward( I_test );
     L_reference = display_model.forward( I_reference );
@@ -52,24 +69,61 @@ else
     L_reference = I_reference;
 end
 
-% Convert abaolute linear values to PU value
+MET = struct();
+MET.PSNR.only_lum = false;
+MET.PSNR.func = @(T,R) psnr( T, R, 256 );
+
+MET.PSNRY.only_lum = true;
+MET.PSNRY.func = @(T,R) psnr( T, R, 256 );
+
+MET.SSIM.only_lum = true;
+MET.SSIM.func = @(T,R) ssim( T, R, 'DynamicRange', 256);            
+
+MET.MSSSIM.only_lum = true;
+MET.MSSSIM.func = @(T,R) multissim( T, R, 'DynamicRange', 256);            
+
+MET.VSI.only_lum = false;
+MET.VSI.func = @(T,R) m_vsi( T, R );            
+
+MET.FSIM.only_lum = false;
+MET.FSIM.func = @(T,R) m_fsim( T, R );
+
 pu21 = pu21_encoder();
-P_test = pu21.encode( L_test );
-P_reference = pu21.encode( L_reference );
 
 if ischar( metric )
-    switch metric
-        case { 'PSNR', 'psnr' }
-            Q = psnr( P_test, P_reference, 256 );
-        case { 'SSIM', 'ssim' }
-            % Note that we are passing floating point values, which are in the
-            % range 0-256 for the luminance range 0.1 to 100 cd/m^2
-            Q = ssim( P_test, P_reference, 'DynamicRange', 256);
-        otherwise
-            error( 'Unknown metric "%s"', metric );
+    metric = upper(metric);
+    if isfield( MET, metric )
+        % Convert abaolute linear values to PU values
+
+        if ndims(L_test)==3 && MET.(metric).only_lum
+            % Convert RGB image to luminance image
+            L_test = get_luminance( L_test );
+            L_reference = get_luminance( L_reference );
+        end
+
+        P_test = pu21.encode( L_test );
+        P_reference = pu21.encode( L_reference );
+
+        Q = MET.(metric).func(P_test,P_reference);
+    else
+        error( 'Unknown metric "%s"', metric );
     end
+
 else
+    % Convert abaolute linear values to PU values
+    P_test = pu21.encode( L_test );
+    P_reference = pu21.encode( L_reference );
     Q = metric( P_test, P_reference );
 end
 
+end
+
+function val = isimage(I)
+val = isnumeric(I) && (ndims(I)==2 || (ndims(I)==3 && size(I,3)==3));
+end
+
+function Y = get_luminance( img )
+% Return 2D matrix of luminance values for 3D matrix with an RGB image
+
+Y = img(:,:,1) * 0.212656 + img(:,:,2) * 0.715158 + img(:,:,3) * 0.072186;
 end
