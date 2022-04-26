@@ -4,7 +4,7 @@ if ~exist( 'pu21_encoder', 'class' )
     addpath( fullfile( pwd, '..') );
 end
 
-% Create test and reference images in the display-encoded colour space
+% Load a reference image in the display-encoded colour space
 I_ref = imread( 'wavy_facade.png' );
 
 % The parameters of the display model
