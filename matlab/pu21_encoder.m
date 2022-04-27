@@ -64,7 +64,9 @@ classdef pu21_encoder
             %
             % V = encode(obj, Y)
             %
-            % V is in the range from 0 to 1.
+            % V is in the range from 0 to circa 600 (depends on the
+            %   encoding used). 100 [nit] is mapped to 256 to mimic the
+            %   input to SDR quality metrics. 
             % Y is in the range from 0.005 to 10000. The values MUST be
             %   scaled in the absolute units (nits, cd/m^2).
             
@@ -75,7 +77,7 @@ classdef pu21_encoder
             
             Y = min(max(Y, obj.L_min), obj.L_max); % Clamp the values
             p = obj.par;
-            V = p(7) * (((p(1) + p(2)*Y.^p(4))./(1+p(3).*Y.^p(4))).^p(5)-p(6));
+            V = max( p(7) * (((p(1) + p(2)*Y.^p(4))./(1+p(3).*Y.^p(4))).^p(5)-p(6)), 0 );
             
         end
         
@@ -84,7 +86,7 @@ classdef pu21_encoder
             %
             % Y = decode(obj, V)
             %
-            % V is in the range from 0 to 1.
+            % V is in the range from 0 to circa 600.
             % Y is in the range from 0.005 to 10000
             
             p = obj.par;
