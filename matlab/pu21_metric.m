@@ -1,9 +1,10 @@
-function Q = pu21_metric( I_test, I_reference, metric, display_model )
+function Q = pu21_metric( I_test, I_reference, metric, display_model, options )
 arguments
     I_test { isimage(I_test) }
     I_reference { isimage(I_reference) }
     metric = 'PSNR'
     display_model = []
+    options.crf_correcttion logical = false
 end
 % A convenience function for calling traditional (SDR) metrics on
 % PU-encoded pixel values. This is useful for adapting traditional metrics
@@ -11,6 +12,7 @@ end
 %
 % Q = pu21_metric( I_test, I_reference, metric ) % for HDR images
 % Q = pu21_metric( I_test, I_reference, metric, display_model ) % for SDR
+% Q = pu21_metric( ..., 'crf_correction', true ) % SI-HDR evaluation
 %
 % When no display model is passed, I_test and I_reference must be provided
 % as ABSOLUTE linear colour or luminance values. If unsure what those values
@@ -67,6 +69,14 @@ else
     % units
     L_test = I_test;
     L_reference = I_reference;
+end
+
+if options.crf_correcttion
+    if ismatrix(L_test)
+        error( 'crf_correction can be used with color images only.')
+    end
+
+    L_test = crf_correction( L_test, L_reference );
 end
 
 MET = struct();
