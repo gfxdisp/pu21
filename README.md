@@ -7,9 +7,11 @@ This is 2021 revision of the method for encoding high dynamic range images so th
 
 Because linear colour values used for high dynamic range images are not perceptual uniform, HDR pixel values must not be directly used with the metrics intended for standard dynamic range (SDR) images (such as PSNR, SSIM, MS-SSIM). PU21 encodes absolute linear RGB colour values so that they are more perceptually uniform and can be used with SDR metrics. To properly account for the sensitivity of the visual system at a given luminance level, the linear colour values must be mapped to absolute values (emitted from a reference display) before they can be passed to the PU21 encoding. 
 
-The repository includes CRF correction code, which we recommend to use when evaluation single-image high-dynamic-range (SI-HDR) reconstruction methods, or any methods, for which the reproduction of details and structure is more important than the reproduction of tones and colours. See [ex_sihdr.m](https://github.com/gfxdisp/pu21/blob/main/matlab/examples/ex_sihdr.m) for an example how to use CRF correction to compare SI-HDR methods. The details of this technique can be found in the SIGGRAPH paper “Comparison of Single Image HDR Reconstruction Methods — the Caveats of Quality Assessment.” (see the fullk reference below).
-
 Currently only Matlab code is available. However, since the encoding involves a single equation, it can be easily ported to other languages. The encoding is implemented [here](https://github.com/gfxdisp/pu21/blob/main/matlab/pu21_encoder.m). Please use only the `banding_glare` variant. 
+
+## CRF correction - evaluation of single-image HDR reconstruction methods
+
+The repository includes CRF correction code, which we recommend to use when evaluation single-image high-dynamic-range (SI-HDR) reconstruction methods, or any methods, for which the reproduction of details and structure is more important than the reproduction of tones and colours. See [ex_sihdr.m](https://github.com/gfxdisp/pu21/blob/main/matlab/examples/ex_sihdr.m) for an example how to use CRF correction to compare SI-HDR methods. The details of this technique can be found in the SIGGRAPH paper “Comparison of Single Image HDR Reconstruction Methods — the Caveats of Quality Assessment.” (see the full reference below).
 
 # Example
 
