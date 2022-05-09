@@ -45,8 +45,8 @@ Q_A = pu21_metric( I_A, I_ref, 'FSIM' );
 Q_B = pu21_metric( I_B, I_ref, 'FSIM' );
 
 % Enable CRF correction when evaluation SI-HDR methods
-Q_A_corr = pu21_metric( I_A, I_ref, 'FSIM', 'crf_correcttion', true );
-Q_B_corr = pu21_metric( I_B, I_ref, 'FSIM', 'crf_correcttion', true );
+Q_A_corr = pu21_metric( I_A, I_ref, 'FSIM', 'crf_correction', true );
+Q_B_corr = pu21_metric( I_B, I_ref, 'FSIM', 'crf_correction', true );
 
 % Note that without the CRF correction, the quality drops significanly for
 % method B, affected by tone-curve. When CRF correction is enabled, almost

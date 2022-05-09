@@ -4,7 +4,7 @@ arguments
     I_reference { isimage(I_reference) }
     metric = 'PSNR'
     display_model = []
-    options.crf_correcttion logical = false
+    options.crf_correction logical = false
 end
 % A convenience function for calling traditional (SDR) metrics on
 % PU-encoded pixel values. This is useful for adapting traditional metrics
@@ -71,7 +71,7 @@ else
     L_reference = I_reference;
 end
 
-if options.crf_correcttion
+if options.crf_correction
     if ismatrix(L_test)
         error( 'crf_correction can be used with color images only.')
     end
