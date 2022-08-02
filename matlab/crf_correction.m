@@ -1,32 +1,44 @@
 %CRF_CORRECTION Correction of CRF based on reference HDR image
-%   [It,x] = crf_correction(Ir, Igt, deg, lambda, ptf_type, cspace)
+%   [It,x] = crf_correction(Ir, Igt, deg, lambda, ptf_type, cspace, normalize)
 %   aligns the image Ir to the reference HDR image Igt.
 %
-%   'Ir'       - Input image for correction
-%   'Igt'      - Reference HDR image
-%   'deg'      - Degree of polynomial
-%   'lambda'   - Regularization, penalizing large coefficients
-%   'ptf_type' - Non-linear transformation ('log', 'pq', or 'linear')
-%   'cspace'   - Color space ('rgb' or 'luv')
+%   'Ir'        - Input image for correction
+%   'Igt'       - Reference HDR image
+%   'deg'       - Degree of polynomial
+%   'lambda'    - Regularization, penalizing large coefficients
+%   'ptf_type'  - Non-linear transformation ('log', 'pq', or 'linear')
+%   'cspace'    - Color space ('rgb' or 'luv')
+%   'normalize' - Normalize input images (for images not properly scaled
+%                 to absolute luminace)
 %
 % Examples: [It,x] = crf_correction(I, Igt);
-%           [It,x] = crf_correction(I, Igt, 3, 0.01, 'pq', 'luv');
+%           [It,x] = crf_correction(I, Igt, 3, 0.01, 'pq', 'luv', 0);
 
 function [It,x] = crf_correction(Ir, Igt, varargin)
-    args = {3,0.01,'pq','luv'};  % default values
+    args = {3,0.01,'pq','luv',0};  % default values
     args(1:nargin-2) = varargin;
     
     params = struct;
     params.L_min = 0.005;
     params.L_max = 1e4;
-    params.sc = 500;             % pre-scaling
     params.deg = args{1};        % degree of polynomial
     params.lambda = args{2};     % regularization strength
     params.ptf_type = args{3};   % 'pq' or 'log', otherwise linear
     params.cspace = args{4};     % 'rgb' or 'luv'
+    params.normalize = args{5};  % perform normalization (if input 
+                                 % images are not properly calibrated
+                                 % to absolute luminance, normalization
+                                 % and an approximate calibration can
+                                 % be performed)
+    params.sc = 500;             % pre-scaling (for approx. calibration)
     
-    Igt = params.sc*Igt/median(Igt(:));
-    Ir = params.sc*Ir/median(Ir(:));
+    % approximate scaling to absolute luminance (anchoring image median
+    % to the params.sc value)
+    if params.normalize
+        scale_gt = median(Igt(:));
+        Igt = params.sc*Igt/scale_gt;
+        Ir = params.sc*Ir/median(Ir(:));
+    end
     Igt = max(Igt,params.L_min); Ir = max(Ir,params.L_min);
 
     % correction in RGB
@@ -54,7 +66,10 @@ function [It,x] = crf_correction(Ir, Igt, varargin)
         It_luv(:,:,2:3) = It_uv;
         It = luv2rgb(It_luv);
     end
-    It = It/params.sc;
+    
+    if params.normalize
+        It = scale_gt*It/params.sc;
+    end
 end
 
 % Correction
