@@ -1,16 +1,18 @@
 %CRF_CORRECTION Correction of CRF based on reference HDR image
-%   [It,x] = crf_correction(Ir, Igt, deg, lambda, ptf_type, cspace)
+%   [It,x] = crf_correction(Ir, Igt, deg, lambda, ptf_type, cspace, normalize)
 %   aligns the image Ir to the reference HDR image Igt.
 %
-%   'Ir'       - Input image for correction
-%   'Igt'      - Reference HDR image
-%   'deg'      - Degree of polynomial
-%   'lambda'   - Regularization, penalizing large coefficients
-%   'ptf_type' - Non-linear transformation ('log', 'pq', or 'linear')
-%   'cspace'   - Color space ('rgb' or 'luv')
+%   'Ir'        - Input image for correction
+%   'Igt'       - Reference HDR image
+%   'deg'       - Degree of polynomial
+%   'lambda'    - Regularization, penalizing large coefficients
+%   'ptf_type'  - Non-linear transformation ('log', 'pq', or 'linear')
+%   'cspace'    - Color space ('rgb' or 'luv')
+%   'normalize' - Normalize input images (for images not properly scaled
+%                 to absolute luminace)
 %
 % Examples: [It,x] = crf_correction(I, Igt);
-%           [It,x] = crf_correction(I, Igt, 3, 0.01, 'pq', 'luv');
+%           [It,x] = crf_correction(I, Igt, 3, 0.01, 'pq', 'luv', 0);
 
 function [It,x] = crf_correction(Ir, Igt, varargin)
     args = {3,0.01,'pq','luv',0};  % default values
